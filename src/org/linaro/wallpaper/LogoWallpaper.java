@@ -277,6 +277,8 @@ public class LogoWallpaper extends WallpaperService {
 				initAnimationBL(width, height, density, d, w);
 			else if("Bottom-Right".equals(mLocation))
 				initAnimationBR(width, height, density, d, w);
+			else
+				throw new RuntimeException("unknown logo location: " + mLocation);
 		}
 
 		@Override
