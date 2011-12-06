@@ -113,6 +113,11 @@ public class LogoWallpaper extends WallpaperService {
 			}
 		}
 
+		private void getEndingPoints(int boxX, int boxY, int boxW, Point p[]) {
+			for(int i = 0; i < p.length; i++)
+				p[i] = new Point(boxX + (i*boxW), boxY);
+		}
+
 		private void initAnimation(int width, int height) {
 			float density = getResources().getDisplayMetrics().density;
 
@@ -126,30 +131,28 @@ public class LogoWallpaper extends WallpaperService {
 			Drawable d = getResources().getDrawable(R.drawable.box);
 			int w = d.getIntrinsicWidth() + Math.round(3*density);
 
+			Point p[] = new Point[mBox.length];
+			getEndingPoints(boxX, boxY, w, p);
+
 			//box 1 from the top,left
 			Point start = new Point(0, 0);
-			Point end = new Point(boxX + (0*w), boxY);
-			mBox[0] = new MovingDrawable(d, start, end, NUM_FRAMES);
+			mBox[0] = new MovingDrawable(d, start, p[0], NUM_FRAMES);
 
 			//box 2 from the bottom,left
 			start = new Point(0, height);
-			end = new Point(boxX + (1*w), boxY);
-			mBox[1] = new MovingDrawable(d, start, end, NUM_FRAMES);
+			mBox[1] = new MovingDrawable(d, start, p[1], NUM_FRAMES);
 
 			//box 3 from the top
 			start = new Point(boxX + (2*w), 0);
-			end = new Point(boxX + (2*w), boxY);
-			mBox[2] = new MovingDrawable(d, start, end, NUM_FRAMES);
+			mBox[2] = new MovingDrawable(d, start, p[2], NUM_FRAMES);
 
 			//box 4 from the bottom,right
 			start = new Point(width, height);
-			end = new Point(boxX + (3*w), boxY);
-			mBox[3] = new MovingDrawable(d, start, end, NUM_FRAMES);
+			mBox[3] = new MovingDrawable(d, start, p[3], NUM_FRAMES);
 
 			//box 5 from the top,left
 			start = new Point(width, 0);
-			end = new Point(boxX + (4*w), boxY);
-			mBox[4] = new MovingDrawable(d, start, end, NUM_FRAMES);
+			mBox[4] = new MovingDrawable(d, start, p[4], NUM_FRAMES);
 
 			mNumFrameDelays = NUM_FRAMES / mBox.length;
 		}
