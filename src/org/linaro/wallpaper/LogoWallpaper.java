@@ -16,6 +16,7 @@
 
 package org.linaro.wallpaper;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -51,7 +52,8 @@ public class LogoWallpaper extends WallpaperService {
 		return new WallpaperEngine();
 	}
 
-	class WallpaperEngine extends Engine {
+	class WallpaperEngine extends Engine
+		implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 		private final Runnable mDrawHandler = new Runnable() {
 			@Override
@@ -65,8 +67,12 @@ public class LogoWallpaper extends WallpaperService {
 		private final Bitmap mLogo;
 		private MovingDrawable mBox[];
 
+		private String mLocation = null;
 		private float mLogoX = 0;
 		private float mLogoY = 0;
+
+		private int mWidth=0;
+		private int mHeight=0;
 
 		//let's each box render mNumFrameDelays before starting to render the
 		//next box
@@ -81,12 +87,20 @@ public class LogoWallpaper extends WallpaperService {
 		@Override
 		public void onCreate(SurfaceHolder surfaceHolder) {
 			super.onCreate(surfaceHolder);
+			SharedPreferences sp = getSharedPreferences();
+			mLocation = sp.getString(LogoSettings.KEY_NAME, "Center");
+			sp.registerOnSharedPreferenceChangeListener(this);
 		}
 
 		@Override
 		public void onDestroy() {
 			super.onDestroy();
 			mHandler.removeCallbacks(mDrawHandler);
+			getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		}
+
+		private SharedPreferences getSharedPreferences() {
+			return LogoWallpaper.this.getSharedPreferences(LogoSettings.PREFS_NAME, 0);
 		}
 
 		@Override
@@ -145,6 +159,8 @@ public class LogoWallpaper extends WallpaperService {
 				int width, int height) {
 			super.onSurfaceChanged(holder, format, width, height);
 
+			mWidth = width;
+			mHeight = height;
 			initAnimation(width, height);
 			drawFrame();
 		}
@@ -207,6 +223,14 @@ public class LogoWallpaper extends WallpaperService {
 			}
 
 			c.restore();
+		}
+
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+			String val = sp.getString(key, mLocation);
+			mLocation = val;
+			initAnimation(mWidth, mHeight);
+			drawFrame();
 		}
  	}
 }
