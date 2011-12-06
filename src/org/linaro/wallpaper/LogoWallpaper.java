@@ -118,21 +118,16 @@ public class LogoWallpaper extends WallpaperService {
 				p[i] = new Point(boxX + (i*boxW), boxY);
 		}
 
-		private void initAnimation(int width, int height) {
-			float density = getResources().getDisplayMetrics().density;
-
+		private void initAnimationCenter(int width, int height, float density,
+										Drawable d, int boxSpacing) {
 			mLogoX = (width/2.0f) - (mLogo.getWidth()/2.0f);
 			mLogoY = (height/2.0f) - (mLogo.getHeight()/2.0f);
 
-			mBox = new MovingDrawable[5];
-
 			int boxX = Math.round(mLogoX + (BOX_XOFFSET*density));
 			int boxY = Math.round(mLogoY + (BOX_YOFFSET*density));
-			Drawable d = getResources().getDrawable(R.drawable.box);
-			int w = d.getIntrinsicWidth() + Math.round(3*density);
 
 			Point p[] = new Point[mBox.length];
-			getEndingPoints(boxX, boxY, w, p);
+			getEndingPoints(boxX, boxY, boxSpacing, p);
 
 			//box 1 from the top,left
 			Point start = new Point(0, 0);
@@ -153,8 +148,19 @@ public class LogoWallpaper extends WallpaperService {
 			//box 5 from the top,left
 			start = new Point(width, 0);
 			mBox[4] = new MovingDrawable(d, start, p[4], NUM_FRAMES);
+		}
 
+		private void initAnimation(int width, int height) {
+			float density = getResources().getDisplayMetrics().density;
+
+			mBox = new MovingDrawable[5];
 			mNumFrameDelays = NUM_FRAMES / mBox.length;
+
+			Drawable d = getResources().getDrawable(R.drawable.box);
+			int w = d.getIntrinsicWidth() + Math.round(3*density);
+
+			if("Center".equals(mLocation))
+				initAnimationCenter(width, height, density, d, w);
 		}
 
 		@Override
