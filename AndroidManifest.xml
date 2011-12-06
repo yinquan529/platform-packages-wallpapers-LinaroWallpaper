@@ -20,5 +20,10 @@
 				</intent-filter>
 				<meta-data android:name="android.service.wallpaper" android:resource="@xml/logo1" />
 		</service>
+		<activity
+			android:label="@string/logo1_settings"
+			android:name=".LogoSettings"
+			android:exported="true"
+		/>
 	</application>
 </manifest>

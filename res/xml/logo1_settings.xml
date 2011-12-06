@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+		android:title="@string/logo1_settings"
+		android:key="logo1_settings">
+
+	<ListPreference
+		android:key="location"
+		android:title="@string/logo1_settings_title"
+		android:summary="@string/logo1_settings_summary"
+		android:entries="@array/logo1_locations"
+		android:entryValues="@array/logo1_locations"
+	/>
+
+</PreferenceScreen>

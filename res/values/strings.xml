@@ -2,4 +2,8 @@
 <resources>
 	<string name="app_name">Linaro Live Wallpaper</string>
 	<string name="wallpaper_logo1">Linaro Animated Logo</string>
+	
+	<string name="logo1_settings">Settings</string>
+	<string name="logo1_settings_title">Select location</string>
+	<string name="logo1_settings_summary">Choose where to display the logo</string>
 </resources>
