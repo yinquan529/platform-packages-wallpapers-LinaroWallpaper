@@ -231,6 +231,33 @@ public class LogoWallpaper extends WallpaperService {
 			mBox[4] = new MovingDrawable(d, start, p[4], NUM_FRAMES);
 		}
 
+		private void initAnimationBR(int width, int height, float density,
+									Drawable d, int boxSpacing) {
+			mLogoX = width - mLogo.getWidth() - 40; //offset just a bit
+			mLogoY = height - mLogo.getHeight() - 80;
+
+			int boxX = Math.round(mLogoX + (BOX_XOFFSET*density));
+			int boxY = Math.round(mLogoY + (BOX_YOFFSET*density));
+
+			Point p[] = new Point[mBox.length];
+			getEndingPoints(boxX, boxY, boxSpacing, p);
+
+			Point start = new Point(0, boxY); //boxY left
+			mBox[0] = new MovingDrawable(d, start, p[0], NUM_FRAMES);
+
+			start = new Point(0, height/2); //middle left
+			mBox[1] = new MovingDrawable(d, start, p[1], NUM_FRAMES);
+
+			start = new Point(0, 0); //top left
+			mBox[2] = new MovingDrawable(d, start, p[2], NUM_FRAMES);
+
+			start = new Point(width/2, 0); //top middle
+			mBox[3] = new MovingDrawable(d, start, p[3], NUM_FRAMES);
+
+			start = new Point(boxX+(4*boxSpacing), 0); //top boxX
+			mBox[4] = new MovingDrawable(d, start, p[4], NUM_FRAMES);
+		}
+
 		private void initAnimation(int width, int height) {
 			float density = getResources().getDisplayMetrics().density;
 
@@ -248,6 +275,8 @@ public class LogoWallpaper extends WallpaperService {
 				initAnimationTR(width, height, density, d, w);
 			else if("Bottom-Left".equals(mLocation))
 				initAnimationBL(width, height, density, d, w);
+			else if("Bottom-Right".equals(mLocation))
+				initAnimationBR(width, height, density, d, w);
 		}
 
 		@Override
