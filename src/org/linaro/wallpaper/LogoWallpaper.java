@@ -99,11 +99,7 @@ public class LogoWallpaper extends WallpaperService {
 			}
 		}
 
-		@Override
-		public void onSurfaceChanged(SurfaceHolder holder, int format,
-				int width, int height) {
-			super.onSurfaceChanged(holder, format, width, height);
-
+		private void initAnimation(int width, int height) {
 			float density = getResources().getDisplayMetrics().density;
 
 			mLogoX = (width/2.0f) - (mLogo.getWidth()/2.0f);
@@ -142,7 +138,14 @@ public class LogoWallpaper extends WallpaperService {
 			mBox[4] = new MovingDrawable(d, start, end, NUM_FRAMES);
 
 			mNumFrameDelays = NUM_FRAMES / mBox.length;
+		}
 
+		@Override
+		public void onSurfaceChanged(SurfaceHolder holder, int format,
+				int width, int height) {
+			super.onSurfaceChanged(holder, format, width, height);
+
+			initAnimation(width, height);
 			drawFrame();
 		}
 
